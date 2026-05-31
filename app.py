@@ -27,35 +27,26 @@ def send_telegram_message(msg):
         print(f"Ошибка ТГ: {e}")
 
 @app.route('/')
-
 def index():
-
     ads_cookie = request.cookies.get('user_ads')
-
     user_ads = []
 
     if ads_cookie:
-
         try:
-
             user_ads = json.loads(ads_cookie)
-
-        except:
-
+        except Exception:
             user_ads = []
 
-    
-
     try:
-
         with open('index.html', 'r', encoding='utf-8') as f:
-
             html_content = f.read()
 
-            return render_template_string(html_content, user_ads=user_ads)
+        return render_template_string(
+            html_content,
+            user_ads=user_ads
+        )
 
     except Exception as e:
-
         return f"Ошибка шаблона: {e}", 500
 
 @app.route('/get_token', methods=['POST'])
