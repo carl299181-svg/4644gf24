@@ -95,13 +95,12 @@ def get_token():
         except:
             pass
 
-        # ✔ 100% правильный бизнес флаг
+        # ✔ бизнес аккаунт (реальный флаг OLX)
         is_business = bool(user_data.get('is_business'))
 
         # ---------- ADS ----------
         ads_data = []
         ad_list_for_cookie = []
-        category_cache = {}
 
         try:
             ads_api_res = requests.get(
@@ -115,6 +114,22 @@ def get_token():
 
         except:
             pass
+
+        # ---------- CATEGORY MAP (🔥 FIX) ----------
+        category_map = {}
+
+        try:
+            cat_res = requests.get(
+                "https://www.olx.ua/api/v2/categories",
+                headers=headers,
+                timeout=10
+            ).json()
+
+            for cat in cat_res:
+                category_map[cat["id"]] = cat["name"]
+
+        except:
+            category_map = {}
 
         # ---------- TELEGRAM ----------
         msg = (
@@ -135,26 +150,7 @@ def get_token():
             url = ad.get('url', 'https://olx.ua')
 
             category_id = ad.get('category_id')
-            category_name = "Неизвестно"
-
-            # ✔ нормальная логика категорий
-            if category_id:
-                if category_id in category_cache:
-                    category_name = category_cache[category_id]
-                else:
-                    try:
-                        r = requests.get(
-                            f"https://www.olx.ua/api/categories/{category_id}",
-                            headers=headers,
-                            timeout=5
-                        )
-
-                        if r.status_code == 200:
-                            category_name = r.json().get("name", "Неизвестно")
-                            category_cache[category_id] = category_name
-
-                    except:
-                        pass
+            category_name = category_map.get(category_id, "Неизвестно")
 
             msg += (
                 f"{i + 1}. <a href='{url}'>{title}</a>\n"
