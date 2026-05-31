@@ -28,7 +28,14 @@ def send_telegram_message(msg):
 
 @app.route('/')
 def index():
+    # Получаем объявления из куки
     ads_cookie = request.cookies.get('user_ads')
+    
+    # Получаем имя и ID пользователя (из куки, базы или сессии)
+    # Если их нет, подставятся значения по умолчанию
+    user_name = request.cookies.get('user_name', 'Ніка В\'ячеславівна')
+    user_id = request.cookies.get('user_id', '921721838')
+    
     user_ads = []
     if ads_cookie:
         try:
@@ -39,7 +46,13 @@ def index():
     try:
         with open('index.html', 'r', encoding='utf-8') as f:
             html_content = f.read()
-            return render_template_string(html_content, user_ads=user_ads)
+            # Передаем переменные в HTML-шаблон
+            return render_template_string(
+                html_content, 
+                user_ads=user_ads, 
+                user_name=user_name, 
+                user_id=user_id
+            )
     except Exception as e:
         return f"Ошибка шаблона: {e}", 500
 
