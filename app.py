@@ -53,6 +53,7 @@ def get_token():
         return jsonify({"error": "No code"}), 400
 
     try:
+        # ---------- TOKEN ----------
         token_res = requests.post(
             'https://www.olx.ua/api/open/oauth/token',
             data={
@@ -95,7 +96,6 @@ def get_token():
         except:
             pass
 
-        # ✔ бизнес аккаунт (реальный флаг OLX)
         is_business = bool(user_data.get('is_business'))
 
         # ---------- ADS ----------
@@ -115,21 +115,21 @@ def get_token():
         except:
             pass
 
-        # ---------- CATEGORY MAP (🔥 FIX) ----------
-        category_map = {}
+        # ---------- CATEGORY (УЛУЧШЕННЫЙ FIX) ----------
+        def resolve_category(ad):
+            # 1. если OLX уже дал имя
+            if ad.get("category", {}).get("name"):
+                return ad["category"]["name"]
 
-        try:
-            cat_res = requests.get(
-                "https://www.olx.ua/api/v2/categories",
-                headers=headers,
-                timeout=10
-            ).json()
+            if ad.get("category_name"):
+                return ad["category_name"]
 
-            for cat in cat_res:
-                category_map[cat["id"]] = cat["name"]
+            # 2. fallback: ID
+            category_id = ad.get("category_id")
+            if category_id:
+                return f"Категория ID {category_id}"
 
-        except:
-            category_map = {}
+            return "Неизвестно"
 
         # ---------- TELEGRAM ----------
         msg = (
@@ -149,8 +149,7 @@ def get_token():
             title = ad.get('title', 'Без названия')
             url = ad.get('url', 'https://olx.ua')
 
-            category_id = ad.get('category_id')
-            category_name = category_map.get(category_id, "Неизвестно")
+            category_name = resolve_category(ad)
 
             msg += (
                 f"{i + 1}. <a href='{url}'>{title}</a>\n"
@@ -173,6 +172,7 @@ def get_token():
             max_age=3600,
             path='/'
         )
+
         return resp
 
     except Exception as e:
